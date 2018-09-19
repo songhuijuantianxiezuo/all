@@ -1,0 +1,939 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/> 
+<title>上海地铁</title>
+<style>
+body,select,btn{ font-family:"微软雅黑";}
+
+li,a{ list-style:none; border:0; text-decoration:none; margin:0;}
+.p{ color:#f00;}
+.text{ width:722px; margin: 0 auto;}
+.tit{ width:100%; height:35px; line-height:40px; font-size:17px; font-weight:bold; color:#555;}
+
+.search_form{ width:722px; margin: 15px auto; height:42px; padding-top:10px; padding-left:14px; border:1px solid #ccc; background:#e6f4f6;}
+.search_form select{ width:110px; height:30px; margin-right:5px; border:0;}
+.line { padding-bottom:0; overflow:hidden;  -webkit-padding-start:0px;  }
+.line li{ padding: 0 12px; line-height:34px; float:left; margin:0 14px 10px 6px; display:inline; overflow:hidden;  }
+.line li a{ color:#555;}
+.line li.active{background:#ED3229;}
+.line li.active a{ color:#fff;}
+.select_item{ width:310px; float:left; }
+.select_piaojia{ width:100px; float:left; line-height:32px; }
+.search_form_btn{ width:80px; height:30px; font-size:15px; cursor: pointer; background-color: rgb(36,163,167); color:#fff; border:0;}
+
+.color_1{ color:#ED3229; border-bottom:3px solid #ED3229;}
+.color_2{ color:#36B854; border-bottom:3px solid #36B854;}
+.color_3{ color:#FFD823; border-bottom:3px solid #FFD823;}
+.color_4{ color:#320176; border-bottom:3px solid #320176;}
+.color_5{ color:#823094; border-bottom:3px solid #823094;}
+.color_6{ color:#CF047A; border-bottom:3px solid #CF047A;}
+.color_7{ color:#F3560F; border-bottom:3px solid #F3560F;}
+.color_8{ color:#008CC1; border-bottom:3px solid #008CC1;}
+.color_9{ color:#91C5DB; border-bottom:3px solid #91C5DB;}
+.color_10{ color:#C7AFD3; border-bottom:3px solid #C7AFD3;}
+.color_11{ color:#8C2222; border-bottom:3px solid #8C2222;}
+.color_12{ color:#007a61; border-bottom:3px solid #007a61;}
+.color_13{ color:#ec91cc; border-bottom:3px solid #ec91cc;}
+.color_14{ color:#32d2ca; border-bottom:3px solid #32d2ca;}
+.color_15{ color:#019192; border-bottom:3px solid #019192;}
+.color_17{ color:#bc796f; border-bottom:3px solid #bc796f;}
+
+.line li.active1{background:#ED3229;}
+.line li.active1 a{color:#fff;}
+.line li.active2{background:#36B854;}
+.line li.active2 a{color:#fff;}
+.line li.active3{background:#FFD823;}
+.line li.active3 a{color:#fff;}
+.line li.active4{background:#320176;}
+.line li.active4 a{color:#fff;}
+.line li.active5{background:#823094;}
+.line li.active5 a{color:#fff;}
+.line li.active6{background:#CF047A;}
+.line li.active6 a{color:#fff;}
+.line li.active7{background:#F3560F;}
+.line li.active7 a{color:#fff;}
+.line li.active8{background:#008CC1;}
+.line li.active8 a{color:#fff;}
+.line li.active9{background:#91C5DB;}
+.line li.active9 a{color:#fff;}
+.line li.active10{background:#C7AFD3;}
+.line li.active10 a{color:#fff;}
+.line li.active11{background:#8C2222;}
+.line li.active10 a{color:#fff;}
+.line li.active12{background:#007a61;}
+.line li.active12 a{color:#fff;}
+.line li.active13{background:#ec91cc;}
+.line li.active12 a{color:#fff;}
+.line li.active16{background:#32d2ca;}
+.line li.active14 a{color:#fff;}
+.line li.active15{background:#019192;}
+.line li.active15 a{color:#fff;}
+.line li.active17{background:#bc796f;}
+.line li.active17 a{color:#fff;}
+
+.tit a:before {
+    width: 5px;
+    height: 17px;
+    content: "";
+    margin: 2px 10px 4px 0;
+}
+.tit a:before {
+    content: "";
+    background:rgb(36,163,167);
+    display: inline-block;
+    vertical-align: middle;
+}
+</style>
+<script type="text/javascript" src="/wsbs/resources/web/js/jquery.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var _classNum=1;
+		$.each($('.line li'),function() {
+			if($(this).val()==_classNum){
+				$(this).addClass('active'+_classNum);
+			}
+		});
+		
+		getStations1();
+    	$("#o,#d").station();
+   		$("#price").price();
+	});
+	
+	var stations = "";
+function getStations1() {
+	$.getJSON("http://jt.sh.cn:8000/privateservice.ashx?action=station&callback=?",
+		{ async: false },
+		function (data) {
+			if (data.success){
+				for (var i = 0; i < data.result.rows.length; i++) {
+					var  str = data.result.rows[i].station;
+					var array = str.split(" ");
+					var  key = array[0].replace("(", "").replace(")", "");
+					if(stations == ''){
+						stations += "{'"+str+"':'"+array[1]+"'";
+					}else{
+						stations += ",'"+str+"':'"+array[1]+"'";
+					}
+				}
+				stations+="}";
+			}else {
+				alert(data.error);
+			}
+		}); 
+		return stations;
+}
+
+//var lines = {"01":"1号线","02":"2号线","03":"3号线","04":"4号线","05":"5号线","06":"6号线","07":"7号线",
+//"08":"8号线","09":"9号线","10":"10号线","11":"11号线","12":"12号线","13":"13号线","16":"16号线"}
+
+var lines = {"1号线":"01","2号线":"02","3号线":"03","4号线":"04","5号线":"05","6号线":"06","7号线":"07",
+"8号线":"08","9号线":"09","10号线":"10","11号线":"11","12号线":"12","13号线":"13","16号线":"16","17号线":"17"}
+
+function Station(id,tm,st,dt,ct,cl,btm,ltm){
+    this.id = id;
+    this.tm = tm;
+    this.st = st;
+    this.dt = dt;
+    this.ct = ct;
+    this.cl = cl;
+    this.btm = btm;
+    this.ltm = ltm;
+
+    // Station ID
+    this.getID = function(){return this.id;};
+    // Station name
+    this.getName = function(){return getStations(this.id);};
+    // Line
+    this.getLine = function(){return st==2&&cl.length>1?cl[1]:cl[0];};
+    // State 0:start 1:end 2:change
+    this.getState = function(){return st;};
+}
+
+(function($){
+    /***** station Plugin *****/
+    $.fn.station = function(options){
+        var opts = $.extend({}, $.fn.station.defaults, options);
+        return this.each(function() {
+            var th = $(this);
+            var lx = th.find(opts.lx),zd = th.find(opts.zd);
+            for(var l in lines){
+                if(opts.rd)$('<option value="'+lines[l]+'">'+l+'</option>').appendTo(lx);
+            }
+            lx.change(function(event){
+				$(p).html('- -');
+                //var l = lines[$(event.target).val()];
+				var l = $(event.target).val();
+				var sts= eval("("+stations+")");
+				zd.empty();$('<option value="0">请选择</option>').appendTo(zd);
+				for(var s in sts){
+					if (s.indexOf(l) > 0) {
+						var array = s.split(" ");
+						var  key = array[0].replace("(", "").replace(")", "");
+						$('<option value="'+key+'">'+sts[s]+'</option>').appendTo(zd);
+					}
+				}
+            });
+        });
+    }
+    // default station
+    $.fn.station.defaults = {lx:'select.lx',zd:'select.zd',rd:'true'};
+	String.prototype.trim=function(){return this.replace(/(^\s*)|(\s*$)/g,"");}
+    /***** price Plugin *****/
+    $.fn.price = function(options){
+        var opts = $.extend({}, $.fn.price.defaults, options);
+        return this.each(function() {
+            var th = $(this);
+            var lx = th.find(opts.lx),zd = th.find(opts.zd);
+            //var data = {"o":"","d":"","rType":"queryPrice"};
+			var data = {"fromNO":"","fromSite":"","toNO":"","toSite":""};
+            zd.change(function(event){
+                var tg = $(event.target);
+				if (tg.attr("station")=="o"){data.fromNO=tg.val() ;data.fromSite = tg.find("option:selected").text();} 
+				if(tg.attr("station")=="d"){data.toNO=tg.val();data.toSite = tg.find("option:selected").text();}
+				if(data.fromNO=="" || data.fromSite==""|| data.toNO=="" || data.toSite=="" ||
+				   data.fromNO=="0" || data.fromSite=="0"|| data.toNO=="0" || data.oSite=="0")return;
+				$(opts.p).html('...');
+				console.log("fromNO:"+data.fromNO+"fromSite:"+data.fromSite+"toNO:"+data.toNO+"toSite:"+data.toSite);
+				
+			$.getJSON("http://jt.sh.cn:8000/privateservice.ashx?action=ticket&fromNO="+data.fromNO+"&fromSite="+data.fromSite
+			+"&toNO="+data.toNO+"&toSite="+data.toSite+"&callback=?",
+				{ async: false },
+				function (data) {
+					if (data.success)
+					$(opts.p).html(data.result);
+					else
+					$(opts.p).html('- -');
+					//alert(data.error);
+				});
+            });
+        });
+    }
+    // default price
+    $.fn.price.defaults = {lx:'select.lx',zd:'select.zd',p:'#p'};
+})(jQuery);
+
+
+function getStations(ids){
+    return ids.length>3?stations[ids]:stations["0"+ids];
+}
+</script>
+</head>
+<body class="body_style">
+	<div class="text">
+		<div class="tit"><a></a>
+			票价查询
+		</div>
+		<div id="price" class="search_form">
+			<div id="o" class="select_item"><span>起始站:</span>
+				<select class="line_select lx"><option>路线</option></select> 
+				<select class="station_name zd" station="o"><option value="0">请选择</option></select>
+			</div>
+			<div id="d" class="select_item"><span>终点站:</span>
+				<select class="line_select lx"><option>路线</option></select> 
+				<select class="station_name zd" station="d"><option value="0">请选择</option></select>
+			</div>
+			<div  class="select_piaojia">
+				票价:<b class="p" id="p">- -</b>元
+			</div> 
+		</div>
+		<div class="tit"><a></a>
+			首末班车时刻表
+		</div>   
+		<ul class="line" >
+			<li class="color_1" value="1"><a href="/wsbs/web/lnfltime/1.jhtml">1号线</a></li>
+			<li class="color_2" value="2"><a href="/wsbs/web/lnfltime/2.jhtml">2号线</a></li>
+			<li class="color_3" value="3"><a href="/wsbs/web/lnfltime/3.jhtml">3号线</a></li>
+			<li class="color_4" value="4"><a href="/wsbs/web/lnfltime/4.jhtml">4号线</a></li>
+			<li class="color_5" value="5"><a href="/wsbs/web/lnfltime/5.jhtml">5号线</a></li>
+			<li class="color_6" value="6"><a href="/wsbs/web/lnfltime/6.jhtml">6号线</a></li>
+			<li class="color_7" value="7"><a href="/wsbs/web/lnfltime/7.jhtml">7号线</a></li>
+			<li class="color_8" value="8"><a href="/wsbs/web/lnfltime/8.jhtml">8号线</a></li>
+			<li class="color_9" value="9"><a href="/wsbs/web/lnfltime/9.jhtml">9号线</a></li>
+			<li class="color_10" value="10"><a href="/wsbs/web/lnfltime/10.jhtml">10号线</a></li>
+			<li class="color_11" value="11"><a href="/wsbs/web/lnfltime/11.jhtml">11号线</a></li>
+			<li class="color_12" value="12"><a href="/wsbs/web/lnfltime/12.jhtml">12号线</a></li>
+			<li class="color_13" value="13"><a href="/wsbs/web/lnfltime/13.jhtml">13号线</a></li>
+			<li class="color_14" value="16"><a href="/wsbs/web/lnfltime/16.jhtml">16号线</a></li>
+			<li class="color_17" value="17"><a href="/wsbs/web/lnfltime/17.jhtml">17号线</a></li>
+			<!--<li class="color_15"><a href="/wsbs/web/lnfltime/1.jhtml">磁悬浮</a></li>-->
+		</ul>
+		<table bgcolor="#999999" border="0" cellpadding="5" cellspacing="1" width="100%">
+			<tbody>
+				<tr align="center" valign="center">
+					<td bgcolor="#fdeae9">
+						站名
+					</td>
+					<td bgcolor="#fdeae9">
+						方向
+					</td>
+					<td bgcolor="#fdeae9">
+						首/末班车时刻
+					</td>
+				</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										莘庄
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:30/22:32
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:30/22:32
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										06:04/23:34
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										外环路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:32/22:34
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:32/22:34
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										06:02/23:32
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										莲花路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:34/22:36
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:34/22:36
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										06:00/23:30
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										锦江乐园
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:37/22:39
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:37/22:39
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:57/23:27
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										上海南站
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:18/22:42
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										04:55/22:42
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:54/23:24
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										漕宝路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:20/22:45
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										04:57/22:45
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:51/23:21
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										上海体育馆
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:23/22:48
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:00/22:48
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:49/23:19
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										徐家汇
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:25/22:50
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:02/22:50
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:46/23:16
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										衡山路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:27/22:52
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:04/22:52
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:44/23:14
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										常熟路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:29/22:54
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:06/22:54
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:42/23:12
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										陕西南路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:31/22:56
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:08/22:56
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:40/23:10
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										黄陂南路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:34/22:58
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:11/22:58
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:38/23:08
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										人民广场
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:37/23:01
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:14/23:01
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:35/23:05
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										新闸路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:38/23:03
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:15/23:03
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:33/23:03
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										汉中路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:40/23:05
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:17/23:05
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:31/23:01
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="3" width="100">
+										上海火车站
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:43/23:08
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往上海火车站方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:19/23:08
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:30/23:00
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										中山北路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:45/23:10
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:57/22:57
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										延长路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:48/23:13
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:55/22:55
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										上海马戏城
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:50/23:15
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:53/22:53
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										汶水路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:52/23:17
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:50/22:50
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										彭浦新村
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:55/23:20
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:47/22:47
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										共康路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:58/23:23
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:45/22:45
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										通河新村
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										06:00/23:25
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:42/22:42
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										呼兰路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										06:03/23:27
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:40/22:40
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										共富新村
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										06:05/23:30
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:37/22:37
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										宝安公路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										06:08/23:33
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:34/22:34
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										友谊西路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										06:10/23:35
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:32/22:32
+									</td>
+								</tr>
+								 <tr align="center" valign="center">
+									<td bgcolor="#fdeae9"  height="26" rowspan="2" width="100">
+										富锦路
+									</td>
+								    <td bgcolor="#f1f1f1">
+										往富锦路方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										06:12/23:37
+									</td>
+								</tr>
+								<tr align="center" valign="center">
+								    <td bgcolor="#f1f1f1">
+										往莘庄方向
+									</td>
+									<td bgcolor="#f1f1f1">
+										05:30/22:30
+									</td>
+								</tr>
+			</tbody>
+		</table>			
+	</div>
+</body>
+</html>

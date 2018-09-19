@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.0.4 (Python 3.6.4 on win32)" generated="20180914 16:17:28.979">
+<suite id="s1" name="Sendtopic" source="c:\Users\lenovo\Desktop\robot-framework-new\sendtopic.robot">
+<test id="s1-t1" name="testcse1:">
+<kw name="打开浏览器">
+<kw name="Open Browser" library="Selenium2Library">
+<doc>Opens a new browser instance to the given ``url``.</doc>
+<arguments>
+<arg>http://118.31.19.120:3000/topic/5b9a794bbddb97bf61c1ffdc</arg>
+<arg>browser=chrome</arg>
+</arguments>
+<msg timestamp="20180914 16:17:29.388" level="INFO">Opening browser 'chrome' to base url 'http://118.31.19.120:3000/topic/5b9a794bbddb97bf61c1ffdc'.</msg>
+<status status="PASS" starttime="20180914 16:17:29.388" endtime="20180914 16:17:49.158"></status>
+</kw>
+<kw name="Add Cookie" library="Selenium2Library">
+<doc>Adds a cookie to your current session.</doc>
+<arguments>
+<arg>club</arg>
+<arg>s%3A5b58481a0ec61db748a52c36%24%24%24%24.HQxF4bK%2ByCBrn4%2BGFL63RRv9wTnIIMSAmbjUy9NGtn8</arg>
+</arguments>
+<status status="PASS" starttime="20180914 16:17:49.158" endtime="20180914 16:17:49.533"></status>
+</kw>
+<kw name="Add Cookie" library="Selenium2Library">
+<doc>Adds a cookie to your current session.</doc>
+<arguments>
+<arg>connect.sid</arg>
+<arg>s%3AZYo3VcMYrpTErWCJzuH3vrGVadAaxqum.RmOamVo0Nrh5sYFA6S276xIEzyAqg9e6HFdHR7WURNU</arg>
+</arguments>
+<status status="PASS" starttime="20180914 16:17:49.533" endtime="20180914 16:17:49.551"></status>
+</kw>
+<kw name="Go To" library="Selenium2Library">
+<doc>Navigates the active browser instance to the provided ``url``.</doc>
+<arguments>
+<arg>http://118.31.19.120:3000/topic/5b9a794bbddb97bf61c1ffdc</arg>
+</arguments>
+<msg timestamp="20180914 16:17:49.551" level="INFO">Opening url 'http://118.31.19.120:3000/topic/5b9a794bbddb97bf61c1ffdc'</msg>
+<status status="PASS" starttime="20180914 16:17:49.551" endtime="20180914 16:17:52.282"></status>
+</kw>
+<status status="PASS" starttime="20180914 16:17:29.387" endtime="20180914 16:17:52.283"></status>
+</kw>
+<kw name="输入内容">
+<arguments>
+<arg>${b}</arg>
+<arg>${a}</arg>
+</arguments>
+<kw name="Mouse Down Click Sendkeys" library="Selenium2Library">
+<arguments>
+<arg>${b}</arg>
+<arg>${a}</arg>
+</arguments>
+<status status="PASS" starttime="20180914 16:17:52.284" endtime="20180914 16:17:52.677"></status>
+</kw>
+<status status="PASS" starttime="20180914 16:17:52.283" endtime="20180914 16:17:52.677"></status>
+</kw>
+<kw name="点击提交">
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by ``locator``.</doc>
+<arguments>
+<arg>css:#reply_form &gt; div &gt; div &gt; div.editor_buttons &gt; input</arg>
+</arguments>
+<msg timestamp="20180914 16:17:52.679" level="INFO">Clicking element 'css:#reply_form &gt; div &gt; div &gt; div.editor_buttons &gt; input'.</msg>
+<status status="PASS" starttime="20180914 16:17:52.678" endtime="20180914 16:17:53.465"></status>
+</kw>
+<kw name="Close Browser" library="Selenium2Library">
+<doc>Closes the current browser.</doc>
+<status status="PASS" starttime="20180914 16:17:53.465" endtime="20180914 16:17:55.867"></status>
+</kw>
+<status status="PASS" starttime="20180914 16:17:52.677" endtime="20180914 16:17:55.868"></status>
+</kw>
+<status status="PASS" starttime="20180914 16:17:29.385" endtime="20180914 16:17:55.868" critical="yes"></status>
+</test>
+<doc>sendtopic</doc>
+<status status="PASS" starttime="20180914 16:17:28.982" endtime="20180914 16:17:55.871"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0">Critical Tests</stat>
+<stat pass="1" fail="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" id="s1" name="Sendtopic">Sendtopic</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

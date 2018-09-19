@@ -1,0 +1,5 @@
+username,password,status,checkpiont
+testuser3,123456,success,testuser3
+tstesss,123456,fail,用户名或密码错误
+,123456,fail,信息不完整。
+test,,fail,信息不完整。
